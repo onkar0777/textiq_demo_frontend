@@ -1,0 +1,18 @@
+.entityNodeDiv {
+  min-width: 15%;
+}
+
+.entityNode-enter {
+  opacity: 0;
+}
+.entityNode-enter-active {
+  opacity: 1;
+  transition: opacity 1000ms;
+}
+.entityNode-exit {
+  opacity: 1;
+}
+.entityNode-exit-active {
+  opacity: 0;
+  transition: opacity 1000ms;
+}

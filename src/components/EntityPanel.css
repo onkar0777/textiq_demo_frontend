@@ -1,0 +1,22 @@
+.EntityPanel {
+  display: flex;
+  flex-direction: column;
+  min-width: 20%;
+}
+
+.SelctedEntityName {
+  color: teal;
+  margin: 0.2rem;
+}
+
+.EntityLabels {
+  color: rgb(39, 39, 39);
+  margin: 0.2rem;
+}
+
+.RelatedEntityList {
+  max-height: 8rem;
+  overflow: scroll;
+  border: 0.1rem dashed lightgray;
+  padding: 0.2rem 0.2rem 0.2rem 2rem;
+}

@@ -1,0 +1,6 @@
+.FileUploadContainer {
+  background-color: white;
+  max-height: 50%;
+  box-shadow: 0.5rem;
+  padding: 2rem;
+}
