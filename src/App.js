@@ -5,10 +5,11 @@ import DocViewerContainer from "./containers/DocViewer.container";
 import * as DocService from "./services/Doc.service";
 
 function App() {
+  // This can be calculated using docs and currentIndex. Used it like this for ease of use. Would have refactored if had time.
   const [currentDoc, setCurrentDoc] = useState(null);
   const [currentDocIndex, setCurrentDocIndex] = useState(null);
-  const [docs, setDocs] = useState([]);
-  const [selectedEntity, setSelectedEntity] = useState(null);
+  const [docs, setDocs] = useState([]); // List of docs fetched initially
+  const [selectedEntity, setSelectedEntity] = useState(null); // The selected named entity
 
   useEffect(() => {
     console.log("rendering again");
@@ -20,7 +21,7 @@ function App() {
       .catch(err => {
         console.log(err);
       });
-  }, []);
+  }, []); // For inital rendering
 
   const onHighlightClick = entityText => {
     const selectedEntity = currentDoc.entities.filter(
@@ -96,7 +97,7 @@ function App() {
         <h1>Demo for TextIQ {!!currentDoc && `-${currentDoc.name}`}</h1>
       </header>
       <div className="App">
-        {/* <FileUploader /> */}
+        {/* <FileUploader />  --- Created this in beginning. Didn't have time to integrate*/}
         {docs.length ? (
           <ListContainer
             selectedIndex={currentDocIndex}

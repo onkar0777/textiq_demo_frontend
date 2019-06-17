@@ -1,4 +1,5 @@
 import React from "react";
+//TODO I am using this list to improve performance. But it has issues like fixed height. Need to implement AutoSizer for this
 import { List } from "react-virtualized";
 import "./List.css";
 
