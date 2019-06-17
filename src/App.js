@@ -8,8 +8,10 @@ function App() {
   const [currentDoc, setCurrentDoc] = useState(null);
   const [currentDocIndex, setCurrentDocIndex] = useState(null);
   const [docs, setDocs] = useState([]);
+  const [selectedEntity, setSelectedEntity] = useState(null);
 
   useEffect(() => {
+    console.log("rendering again");
     DocService.getAllDocs()
       .then(docs => {
         setDocs(docs);
@@ -18,7 +20,15 @@ function App() {
       .catch(err => {
         console.log(err);
       });
-  }, [docs.length]);
+  }, []);
+
+  const onHighlightClick = entityText => {
+    const selectedEntity = currentDoc.entities.filter(
+      x => x.val === entityText
+    )[0];
+    console.log(entityText, selectedEntity, currentDoc.entities);
+    setSelectedEntity(selectedEntity);
+  };
 
   const fetchFile = (docMeta, index) => {
     setCurrentDocIndex(index);
@@ -26,28 +36,27 @@ function App() {
       docMeta.text = text;
       docMeta.searchWords = docMeta.entities.map(x => x.val);
       setCurrentDoc(docMeta);
+      setSelectedEntity(null);
     });
   };
 
-  const updateCurrentDocInList = () => {
-    const selctedDoc = { ...docs[currentDocIndex] };
-    console.log(selctedDoc);
-    selctedDoc.entities = currentDoc.entities;
-    selctedDoc.searchWords = currentDoc.searchWords;
+  const updateCurrentDocInList = updatedDoc => {
     setDocs([
       ...docs.slice(0, currentDocIndex),
-      selctedDoc,
+      updatedDoc,
       ...docs.slice(currentDocIndex)
     ]);
   };
 
-  const updateCurrentDocument = doc => {
-    setCurrentDoc({
+  const updateCurrentDocumentOnDeletion = doc => {
+    let newDoc = {
       ...currentDoc,
       entities: doc.entities,
       searchWords: doc.entities.map(x => x.val)
-    });
-    updateCurrentDocInList();
+    };
+    setCurrentDoc(newDoc);
+    setSelectedEntity(null);
+    updateCurrentDocInList(newDoc);
   };
 
   const updateEntityInDoc = entity => {
@@ -56,25 +65,29 @@ function App() {
     );
     console.log(entityIndex, currentDoc, currentDoc.entities);
     if (entityIndex !== -1) {
-      setCurrentDoc({
+      let newDoc = {
         ...currentDoc,
         entities: [
           ...currentDoc.entities.slice(0, entityIndex),
           entity,
           ...currentDoc.entities.slice(entityIndex)
         ]
-      });
+      };
+      setCurrentDoc(newDoc);
+      setSelectedEntity(entity);
+      updateCurrentDocInList(newDoc);
     }
     console.log(entityIndex, currentDoc, currentDoc.entities);
   };
 
   const addEntityToDoc = entity => {
-    setCurrentDoc({
+    let newDoc = {
       ...currentDoc,
       entities: [...currentDoc.entities, entity],
       searchWords: [...currentDoc.searchWords, entity.val]
-    });
-    updateCurrentDocInList();
+    };
+    setCurrentDoc(newDoc);
+    updateCurrentDocInList(newDoc);
   };
 
   return (
@@ -95,10 +108,12 @@ function App() {
         )}
         {!!currentDoc && (
           <DocViewerContainer
-            updateCurrentDocument={updateCurrentDocument}
+            updateCurrentDocumentOnDeletion={updateCurrentDocumentOnDeletion}
             updateEntityInDoc={updateEntityInDoc}
             addEntityToDoc={addEntityToDoc}
             document={currentDoc}
+            onHighlightClick={onHighlightClick}
+            selectedEntity={selectedEntity}
           />
         )}
       </div>

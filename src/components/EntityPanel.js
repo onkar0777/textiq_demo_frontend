@@ -3,7 +3,13 @@ import "./EntityPanel.css";
 import Select from "react-select";
 import Button from "../common/Button";
 
-function EntityPanel({ document, entity, deleteEntity, saveRelatedEntities }) {
+function EntityPanel({
+  document,
+  entity,
+  deleteEntity,
+  saveRelatedEntities,
+  deleteAllEntities
+}) {
   const [dropdownVal, setDropdownVal] = useState([]);
   const [dropdownOptions, setDropdownOptions] = useState([]);
 
@@ -47,6 +53,9 @@ function EntityPanel({ document, entity, deleteEntity, saveRelatedEntities }) {
       </Button>
       <Button background="darkred" color="white" onClick={deleteEntity}>
         Delete Entity
+      </Button>
+      <Button background="white" color="maroon" onClick={deleteAllEntities}>
+        Delete All Entities
       </Button>
     </div>
   );

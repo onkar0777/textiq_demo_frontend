@@ -7,23 +7,12 @@ import "./DocViewer.container.css";
 
 function DocViewerContainer({
   document,
-  updateCurrentDocument,
+  updateCurrentDocumentOnDeletion,
   updateEntityInDoc,
-  addEntityToDoc
+  addEntityToDoc,
+  selectedEntity,
+  onHighlightClick
 }) {
-  const [selectedEntity, setSelectedEntity] = useState(null);
-
-  useEffect(() => {
-    setSelectedEntity(null);
-  }, [document]);
-
-  const onHighlightClick = entityText => {
-    const selectedEntity = document.entities.filter(
-      x => x.val === entityText
-    )[0];
-    console.log(entityText, selectedEntity, document.entities);
-    setSelectedEntity(selectedEntity);
-  };
   const saveRelatedEntities = relatedEntities => {
     console.log("save these- ", selectedEntity, relatedEntities);
     DocService.updatedRelatedEntities({
@@ -31,7 +20,6 @@ function DocViewerContainer({
       entityId: selectedEntity._id,
       relatedEntities
     }).then(updatedEntity => {
-      setSelectedEntity(updatedEntity);
       updateEntityInDoc(updatedEntity);
     });
   };
@@ -42,7 +30,16 @@ function DocViewerContainer({
       docId: document._id,
       entity: selectedEntity._id
     }).then(updatedDoc => {
-      updateCurrentDocument(updatedDoc);
+      updateCurrentDocumentOnDeletion(updatedDoc);
+    });
+  };
+
+  const deleteAllEntities = () => {
+    console.log("delete entity- ", selectedEntity);
+    DocService.deleteAllEntities({
+      docId: document._id
+    }).then(updatedDoc => {
+      updateCurrentDocumentOnDeletion(updatedDoc);
     });
   };
 
@@ -76,6 +73,7 @@ function DocViewerContainer({
               deleteEntity={deleteEntity}
               document={document}
               entity={selectedEntity}
+              deleteAllEntities={deleteAllEntities}
             />
           )}
         </div>

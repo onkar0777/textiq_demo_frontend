@@ -32,6 +32,14 @@ export const deleteEntity = function(formData) {
   }).then(response => response.json());
 };
 
+export const deleteAllEntities = function(formData) {
+  return fetch(server_api + "/doc/all_entities", {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(formData)
+  }).then(response => response.json());
+};
+
 export const addSelectedTextAsEntity = function(formData) {
   return fetch(server_api + "/doc/add_entity", {
     method: "PUT",
