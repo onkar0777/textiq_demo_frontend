@@ -5,17 +5,25 @@ import Popover from "react-tiny-popover";
 import "./DocViewer.css";
 import Button from "../common/Button";
 
-function DocViewer({ document, onHighlightClick, addSelectedTextAsEntity }) {
+function DocViewer({
+  document,
+  selectedEntity,
+  onHighlightClick,
+  addSelectedTextAsEntity
+}) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [selectedText, setSelectedText] = useState("");
   const onDoubleClick = () => {
-    if (window.getSelection().toString().length) {
-      setIsPopoverOpen(true);
-      setSelectedText(window.getSelection().toString());
-    } else {
-      setSelectedText(window.getSelection().toString());
-      setIsPopoverOpen(false);
+    const newSelectedText = window.getSelection().toString();
+    if (newSelectedText.length) {
+      if (!(selectedEntity && selectedEntity.val === newSelectedText)) {
+        setIsPopoverOpen(true);
+        setSelectedText(newSelectedText);
+        return;
+      }
     }
+    setSelectedText("");
+    setIsPopoverOpen(false);
   };
   useEffect(() => {
     setIsPopoverOpen(false);
@@ -23,7 +31,11 @@ function DocViewer({ document, onHighlightClick, addSelectedTextAsEntity }) {
   function HighlightedEntity({ children }) {
     return (
       <mark
-        className="HighlightClassName"
+        className={
+          selectedEntity && selectedEntity.val === children
+            ? "HighlightClassName SelectedHighlight"
+            : "HighlightClassName"
+        }
         onClick={() => onHighlightClick(children)}
       >
         {children}

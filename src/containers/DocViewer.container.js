@@ -1,9 +1,10 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment } from "react";
 import { CSSTransition } from "react-transition-group";
 import EntityPanel from "../components/EntityPanel";
 import DocViewer from "../components/DocViewer";
 import * as DocService from "../services/Doc.service";
 import "./DocViewer.container.css";
+import Button from "../common/Button";
 
 function DocViewerContainer({
   document,
@@ -11,7 +12,8 @@ function DocViewerContainer({
   updateEntityInDoc,
   addEntityToDoc,
   selectedEntity,
-  onHighlightClick
+  onHighlightClick,
+  removeSelectedEntity
 }) {
   const saveRelatedEntities = relatedEntities => {
     console.log("save these- ", selectedEntity, relatedEntities);
@@ -58,26 +60,38 @@ function DocViewerContainer({
       <DocViewer
         className="DocViewer"
         document={document}
+        selectedEntity={selectedEntity}
         onHighlightClick={onHighlightClick}
         addSelectedTextAsEntity={addSelectedTextAsEntity}
       />
-      <CSSTransition
-        in={!!selectedEntity}
-        timeout={2000}
-        classNames="entityNode"
-      >
-        <div className="entityNodeDiv">
-          {!!selectedEntity && (
-            <EntityPanel
-              saveRelatedEntities={saveRelatedEntities}
-              deleteEntity={deleteEntity}
-              document={document}
-              entity={selectedEntity}
-              deleteAllEntities={deleteAllEntities}
-            />
-          )}
-        </div>
-      </CSSTransition>
+      <div className="entityNodeDiv">
+        <CSSTransition
+          in={!!selectedEntity}
+          timeout={2000}
+          classNames="entityNode"
+        >
+          <div>
+            {!!selectedEntity && (
+              <EntityPanel
+                saveRelatedEntities={saveRelatedEntities}
+                deleteEntity={deleteEntity}
+                document={document}
+                entity={selectedEntity}
+                deleteAllEntities={deleteAllEntities}
+                removeSelectedEntity={removeSelectedEntity}
+              />
+            )}
+          </div>
+        </CSSTransition>
+        <Button
+          style={{ marginTop: "2rem", width: "100%" }}
+          background="white"
+          color="maroon"
+          onClick={deleteAllEntities}
+        >
+          Delete All Entities
+        </Button>
+      </div>
     </Fragment>
   );
 }

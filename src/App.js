@@ -44,7 +44,7 @@ function App() {
     setDocs([
       ...docs.slice(0, currentDocIndex),
       updatedDoc,
-      ...docs.slice(currentDocIndex)
+      ...docs.slice(currentDocIndex + 1)
     ]);
   };
 
@@ -114,6 +114,7 @@ function App() {
             document={currentDoc}
             onHighlightClick={onHighlightClick}
             selectedEntity={selectedEntity}
+            removeSelectedEntity={() => setSelectedEntity(null)}
           />
         )}
       </div>

@@ -8,7 +8,7 @@ function EntityPanel({
   entity,
   deleteEntity,
   saveRelatedEntities,
-  deleteAllEntities
+  removeSelectedEntity
 }) {
   const [dropdownVal, setDropdownVal] = useState([]);
   const [dropdownOptions, setDropdownOptions] = useState([]);
@@ -24,7 +24,15 @@ function EntityPanel({
 
   return (
     <div className="EntityPanel">
-      <h4 className="EntityLabels">Selected Named Entity</h4>
+      <h4 className="EntityLabels">
+        Selected Named Entity
+        <span
+          onClick={removeSelectedEntity}
+          style={{ float: "right", cursor: "pointer" }}
+        >
+          x
+        </span>
+      </h4>
       <h4 className="SelctedEntityName">{entity.val}</h4>
       <h4 className="EntityLabels">Related Entities:</h4>
       <ol className="RelatedEntityList">
@@ -53,9 +61,6 @@ function EntityPanel({
       </Button>
       <Button background="darkred" color="white" onClick={deleteEntity}>
         Delete Entity
-      </Button>
-      <Button background="white" color="maroon" onClick={deleteAllEntities}>
-        Delete All Entities
       </Button>
     </div>
   );

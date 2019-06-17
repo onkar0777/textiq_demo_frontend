@@ -11,8 +11,13 @@
 
 .HighlightClassName {
   background-color: yellowgreen;
-  font-weight: bold;
   border-radius: 0.5rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
+  cursor: pointer;
+}
+
+.SelectedHighlight {
+  background-color: aqua;
+  font-weight: bold;
 }
